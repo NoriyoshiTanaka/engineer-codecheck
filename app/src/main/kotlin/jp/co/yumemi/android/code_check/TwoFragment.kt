@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +16,8 @@ import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
 
 @AndroidEntryPoint
 class TwoFragment : Fragment(R.layout.fragment_two) {
+
+    private val viewModel by activityViewModels<OneViewModel>()
 
     private val args: TwoFragmentArgs by navArgs()
 
@@ -28,14 +31,18 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
 
         binding = FragmentTwoBinding.bind(view)
 
-        var item = args.item
+        val name = args.name
+        val list = viewModel.repositoriesListFlow.value
+        val item: Item? = list.find {
+            it.name == name
+        }
 
-        _binding.ownerIconView.load(item.ownerIconUrl);
-        _binding.nameView.text = item.name;
-        _binding.languageView.text = item.language;
-        _binding.starsView.text = "${item.stargazersCount} stars";
-        _binding.watchersView.text = "${item.watchersCount} watchers";
-        _binding.forksView.text = "${item.forksCount} forks";
-        _binding.openIssuesView.text = "${item.openIssuesCount} open issues";
+        _binding.ownerIconView.load(item?.ownerIconUrl);
+        _binding.nameView.text = item?.name;
+        _binding.languageView.text = item?.language;
+        _binding.starsView.text = "${item?.stargazersCount} stars";
+        _binding.watchersView.text = "${item?.watchersCount} watchers";
+        _binding.forksView.text = "${item?.forksCount} forks";
+        _binding.openIssuesView.text = "${item?.openIssuesCount} open issues";
     }
 }

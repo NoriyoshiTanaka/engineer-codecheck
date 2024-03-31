@@ -36,8 +36,8 @@ class OneFragment: Fragment(R.layout.fragment_one){
         val _dividerItemDecoration=
             DividerItemDecoration(context!!, _layoutManager.orientation)
         val _adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener{
-            override fun itemClick(item: Item){
-                gotoRepositoryFragment(item)
+            override fun itemClick(name: String){
+                gotoRepositoryFragment(name)
             }
         })
 
@@ -65,10 +65,10 @@ class OneFragment: Fragment(R.layout.fragment_one){
         }
     }
 
-    fun gotoRepositoryFragment(item: Item)
+    fun gotoRepositoryFragment(name: String)
     {
         val _action= OneFragmentDirections
-            .actionRepositoriesFragmentToRepositoryFragment(item= item)
+            .actionRepositoriesFragmentToRepositoryFragment(name = name)
         findNavController().navigate(_action)
     }
 }
@@ -95,7 +95,7 @@ class CustomAdapter(
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener{
-    	fun itemClick(item: Item)
+    	fun itemClick(name: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -106,7 +106,7 @@ class CustomAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
     	val _item= getItem(position)
-        binding.item = _item
+        binding.name = _item.name
         binding.onItemClickListener = itemClickListener
     }
 }
