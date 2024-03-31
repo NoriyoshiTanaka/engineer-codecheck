@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
@@ -22,7 +24,7 @@ class OneFragment: Fragment(R.layout.fragment_one){
 
         val _binding= FragmentOneBinding.bind(view)
 
-        val _viewModel= OneViewModel(context!!)
+        val _viewModel by activityViewModels<OneViewModel>()
 
         val _layoutManager= LinearLayoutManager(context!!)
         val _dividerItemDecoration=
@@ -37,9 +39,7 @@ class OneFragment: Fragment(R.layout.fragment_one){
             .setOnEditorActionListener{ editText, action, _ ->
                 if (action== EditorInfo.IME_ACTION_SEARCH){
                     editText.text.toString().let {
-                        _viewModel.searchResults(it).apply{
-                            _adapter.submitList(this)
-                        }
+                        _viewModel.searchRepository(requireContext(), it)
                     }
                     return@setOnEditorActionListener true
                 }
@@ -50,6 +50,12 @@ class OneFragment: Fragment(R.layout.fragment_one){
             it.layoutManager= _layoutManager
             it.addItemDecoration(_dividerItemDecoration)
             it.adapter= _adapter
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            _viewModel.repositoriesListFlow.collect(){
+                _adapter.submitList(it)
+            }
         }
     }
 
