@@ -12,9 +12,11 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 import java.util.*
@@ -25,10 +27,10 @@ import java.util.*
 class OneViewModel : ViewModel() {
 
     // 検索結果
-    fun searchResults(context: Context, inputText: String): List<item> = runBlocking {
+    suspend fun searchResults(context: Context, inputText: String): List<item> = withContext(Dispatchers.IO) {
         val client = HttpClient(Android)
 
-        return@runBlocking GlobalScope.async {
+        return@withContext GlobalScope.async {
             val response: HttpResponse = client?.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
@@ -39,6 +41,10 @@ class OneViewModel : ViewModel() {
             val jsonItems = jsonBody.optJSONArray("items")!!
 
             val items = mutableListOf<item>()
+
+            /**
+             * アイテムの個数分ループする
+             */
 
             /**
              * アイテムの個数分ループする
