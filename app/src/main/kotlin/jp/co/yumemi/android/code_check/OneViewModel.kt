@@ -6,6 +6,7 @@ package jp.co.yumemi.android.code_check
 import android.content.Context
 import android.os.Parcelable
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
@@ -14,8 +15,10 @@ import io.ktor.client.statement.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
@@ -26,11 +29,33 @@ import java.util.*
  */
 class OneViewModel : ViewModel() {
 
-    // 検索結果
-    suspend fun searchResults(context: Context, inputText: String): List<item> = withContext(Dispatchers.IO) {
+    /**
+     * updateRepositoriesListFlow()を使って更新する。直接更新は避けること。
+     */
+    private val _repositoriesListFlow = MutableStateFlow<List<item>>(listOf())
+
+    /**
+     * UIからcollectする
+     */
+    val repositoriesListFlow = _repositoriesListFlow.asStateFlow()
+
+    /**
+     * _repositoriesListFlowを更新する
+     * - 更新内容はrepositoriesListFlowを通じてUIへ伝わる
+     */
+    private fun updateRepositoriesListFlow(repositories: List<item>) {
+        _repositoriesListFlow.update { repositories }
+    }
+
+    /**
+     * 検索を実行する。
+     * 検索結果はViewModel内に保管しておき、アクティビティ再構築時に利用する。
+     * - 検索結果の取得方法：repositoriesListFlowをcollectする
+     */
+    fun searchRepository(context: Context, inputText: String) {
         val client = HttpClient(Android)
 
-        return@withContext GlobalScope.async {
+        viewModelScope.launch {
             val response: HttpResponse = client?.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
@@ -74,8 +99,8 @@ class OneViewModel : ViewModel() {
 
             lastSearchDate = Date()
 
-            return@async items.toList()
-        }.await()
+            updateRepositoriesListFlow(items)
+        }
     }
 }
 
