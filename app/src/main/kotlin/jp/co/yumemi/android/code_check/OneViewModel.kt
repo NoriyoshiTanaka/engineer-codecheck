@@ -34,7 +34,7 @@ class OneViewModel @Inject constructor() : ViewModel() {
     /**
      * updateRepositoriesListFlow()を使って更新する。直接更新は避けること。
      */
-    private val _repositoriesListFlow = MutableStateFlow<List<item>>(listOf())
+    private val _repositoriesListFlow = MutableStateFlow<List<Item>>(listOf())
 
     /**
      * UIからcollectする
@@ -45,7 +45,7 @@ class OneViewModel @Inject constructor() : ViewModel() {
      * _repositoriesListFlowを更新する
      * - 更新内容はrepositoriesListFlowを通じてUIへ伝わる
      */
-    private fun updateRepositoriesListFlow(repositories: List<item>) {
+    private fun updateRepositoriesListFlow(repositories: List<Item>) {
         _repositoriesListFlow.update { repositories }
     }
 
@@ -67,7 +67,7 @@ class OneViewModel @Inject constructor() : ViewModel() {
 
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<item>()
+            val items = mutableListOf<Item>()
 
             /**
              * アイテムの個数分ループする
@@ -87,7 +87,7 @@ class OneViewModel @Inject constructor() : ViewModel() {
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
 
                 items.add(
-                    item(
+                    Item(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
                         language = context.getString(R.string.written_language, language),
@@ -107,7 +107,7 @@ class OneViewModel @Inject constructor() : ViewModel() {
 }
 
 @Parcelize
-data class item(
+data class Item(
     val name: String,
     val ownerIconUrl: String,
     val language: String,
