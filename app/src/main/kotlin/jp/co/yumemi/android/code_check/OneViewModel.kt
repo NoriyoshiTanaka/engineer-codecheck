@@ -22,12 +22,10 @@ import java.util.*
 /**
  * TwoFragment で使う
  */
-class OneViewModel(
-    val context: Context
-) : ViewModel() {
+class OneViewModel : ViewModel() {
 
     // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    fun searchResults(context: Context, inputText: String): List<item> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
