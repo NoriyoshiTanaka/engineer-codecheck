@@ -4,7 +4,11 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.load
 
-object BingingAdapter {
+/**
+ * イメージをDataBindingで表示するためのアダプター。
+ * 現状では、アバター表示のみで使っている。
+ */
+object ImageBingingAdapter {
     @BindingAdapter("loadImage")
     @JvmStatic
     fun loadImage(

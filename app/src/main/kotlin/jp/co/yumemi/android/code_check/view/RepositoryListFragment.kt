@@ -19,29 +19,31 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.viewModel.OneViewModel
+import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.model.dataClass.Item
-import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryListBinding
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
+import jp.co.yumemi.android.code_check.model.dataClass.Item
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class OneFragment: Fragment(R.layout.fragment_one){
+/**
+ * 初期したときに表示される画面
+ */
+//@AndroidEntryPoint
+class RepositoryListFragment: Fragment(R.layout.fragment_repository_list){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
 
-        val _binding= FragmentOneBinding.bind(view)
+        val _binding= FragmentRepositoryListBinding.bind(view)
 
-        val _viewModel by activityViewModels<OneViewModel>()
+        val _viewModel by activityViewModels<RepositorySearchViewModel>()
 
         val _layoutManager= LinearLayoutManager(context!!)
         val _dividerItemDecoration=
             DividerItemDecoration(context!!, _layoutManager.orientation)
-        val _adapter = CustomAdapter(object : CustomAdapter.OnItemClickListener {
+        val _adapter = RepositoryListAdapter(object : RepositoryListAdapter.OnItemClickListener {
             override fun itemClick(name: String) {
                 gotoRepositoryFragment(name)
             }
@@ -75,13 +77,13 @@ class OneFragment: Fragment(R.layout.fragment_one){
 
     fun gotoRepositoryFragment(name: String)
     {
-        val _action= OneFragmentDirections
+        val _action= RepositoryListFragmentDirections
             .actionRepositoriesFragmentToRepositoryFragment(name = name)
         findNavController().navigate(_action)
     }
 }
 
-val diff_util= object: DiffUtil.ItemCallback<Item>(){
+val diffUtilCallbackImpl= object: DiffUtil.ItemCallback<Item>(){
     override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
         return oldItem == newItem
     }
@@ -92,9 +94,9 @@ val diff_util= object: DiffUtil.ItemCallback<Item>(){
 
 }
 
-class CustomAdapter(
+class RepositoryListAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<Item, CustomAdapter.ViewHolder>(diff_util) {
+) : ListAdapter<Item, RepositoryListAdapter.ViewHolder>(diffUtilCallbackImpl) {
 
     private lateinit var binding: LayoutItemBinding
 

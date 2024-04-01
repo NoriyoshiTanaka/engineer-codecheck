@@ -10,19 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.viewModel.OneViewModel
+import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.view.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryDetailBinding
+import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
 
+/**
+ * リポジトリの詳細を表示するフラグメント。
+ * 現状の機能は表示のみ
+ */
 @AndroidEntryPoint
-class TwoFragment : Fragment(R.layout.fragment_two) {
+class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
 
-    private val viewModel by activityViewModels<OneViewModel>()
+    private val viewModel by activityViewModels<RepositorySearchViewModel>()
 
-    private val args: TwoFragmentArgs by navArgs()
+    private val args: RepositoryDetailFragmentArgs by navArgs()
 
-    private var binding: FragmentTwoBinding? = null
+    private var binding: FragmentRepositoryDetailBinding? = null
     private val _binding get() = binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +35,7 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
         Log.d("検索した日時", lastSearchDate.toString())
 
         // データの割り付けは dataBinding に委ねているので、ここではデータをbindingへ渡すだけで終了
-        binding = FragmentTwoBinding.bind(view)
+        binding = FragmentRepositoryDetailBinding.bind(view)
         _binding.item = viewModel.findRepository(args.name)
     }
 }

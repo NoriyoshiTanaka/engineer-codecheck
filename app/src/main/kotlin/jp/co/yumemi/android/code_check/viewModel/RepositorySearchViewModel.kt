@@ -6,7 +6,7 @@ package jp.co.yumemi.android.code_check.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.view.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,10 +17,10 @@ import java.util.Date
 import javax.inject.Inject
 
 /**
- * TwoFragment で使う
+ * github.comへの接続と、検索結果の広報を担う
  */
 @HiltViewModel
-class OneViewModel @Inject constructor(
+class RepositorySearchViewModel @Inject constructor(
     private val repositorySearchDataSource: RepositorySearchDataSource
 ) : ViewModel() {
 
@@ -39,14 +39,13 @@ class OneViewModel @Inject constructor(
 
     /**
      * UIからcollectする。
-     * これをSingle source of Truthとする。
      */
     val repositoriesListFlow = _repositoriesListFlow.asStateFlow()
 
     /**
-     * 検索を実行する。
+     * github.comへ接続して検索を実行する。
      * 検索結果はViewModel内に保管しておき、アクティビティ再構築時に利用する。
-     * - 検索結果の取得方法：repositoriesListFlowをcollectする
+     * 検索結果はrepositoriesListFlowをcollectして取得する。
      */
     fun searchRepository(inputText: String) {
 
@@ -60,7 +59,7 @@ class OneViewModel @Inject constructor(
     }
 
     /**
-     * nameをキーに、リポジトリを探す。
+     * ViewModel内に保管してあるデータから、nameをキーに、リポジトリを探す。
      * 見つからない場合はnullを返す。
      * @param fullName リポジトリの名前
      */
