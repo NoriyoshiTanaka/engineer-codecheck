@@ -9,11 +9,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
-import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryDetailBinding
 import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 
 /**
  * リポジトリの詳細を表示するフラグメント。

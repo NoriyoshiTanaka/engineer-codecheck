@@ -6,9 +6,9 @@ package jp.co.yumemi.android.code_check.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
+import jp.co.yumemi.android.code_check.model.dataClass.Item
+import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
