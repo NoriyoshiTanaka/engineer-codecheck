@@ -9,7 +9,7 @@ object BingingAdapter {
     @JvmStatic
     fun loadImage(
         imageView: ImageView,
-        imageUrl: String
+        imageUrl: String?
     ){
         imageView.load(imageUrl)
     }

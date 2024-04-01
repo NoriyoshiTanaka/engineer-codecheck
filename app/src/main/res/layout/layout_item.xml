@@ -7,7 +7,7 @@
             name="onItemClickListener"
             type="jp.co.yumemi.android.code_check.CustomAdapter.OnItemClickListener" />
         <variable
-            name="name"
+            name="fullName"
             type="String" />
     </data>
 
@@ -24,8 +24,8 @@
             android:layout_marginVertical="8dp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:text="@{name}"
-            android:onClick="@{() -> onItemClickListener.itemClick(name)}"
+            android:text="@{fullName}"
+            android:onClick="@{() -> onItemClickListener.itemClick(fullName)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

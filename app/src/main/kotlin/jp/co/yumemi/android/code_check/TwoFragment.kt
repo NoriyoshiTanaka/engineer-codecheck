@@ -28,14 +28,8 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
 
         Log.d("検索した日時", lastSearchDate.toString())
 
+        // データの割り付けは dataBinding に委ねているので、ここではデータをbindingへ渡すだけで終了
         binding = FragmentTwoBinding.bind(view)
-
-        val name = args.name
-        val list = viewModel.repositoriesListFlow.value
-        val item: Item? = list.find {
-            it.name == name
-        }
-
-        _binding.item = item
+        _binding.item = viewModel.findRepository(args.name)
     }
 }
