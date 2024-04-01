@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.dataSources
+package jp.co.yumemi.android.code_check.model
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -8,8 +8,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.serialization.kotlinx.json.json
-import jp.co.yumemi.android.code_check.dataClasses.Item
-import jp.co.yumemi.android.code_check.dataClasses.SearchResult
+import jp.co.yumemi.android.code_check.model.dataClass.Item
+import jp.co.yumemi.android.code_check.model.dataClass.SearchResult
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="jp.co.yumemi.android.code_check.dataClasses.Item" />
+            type="jp.co.yumemi.android.code_check.model.dataClass.Item" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

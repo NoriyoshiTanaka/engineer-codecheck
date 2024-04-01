@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.dataClasses.Item
+import jp.co.yumemi.android.code_check.viewModel.OneViewModel
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
 import kotlinx.coroutines.launch

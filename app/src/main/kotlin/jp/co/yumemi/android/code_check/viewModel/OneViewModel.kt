@@ -1,14 +1,14 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.dataClasses.Item
-import jp.co.yumemi.android.code_check.dataSources.RepositorySearchDataSource
+import jp.co.yumemi.android.code_check.view.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.model.dataClass.Item
+import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
