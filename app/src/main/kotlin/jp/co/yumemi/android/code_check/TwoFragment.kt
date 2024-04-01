@@ -9,7 +9,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
-import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
@@ -37,12 +36,6 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
             it.name == name
         }
 
-        _binding.ownerIconView.load(item?.ownerIconUrl);
-        _binding.nameView.text = item?.name;
-        _binding.languageView.text = item?.language;
-        _binding.starsView.text = "${item?.stargazersCount} stars";
-        _binding.watchersView.text = "${item?.watchersCount} watchers";
-        _binding.forksView.text = "${item?.forksCount} forks";
-        _binding.openIssuesView.text = "${item?.openIssuesCount} open issues";
+        _binding.item = item
     }
 }

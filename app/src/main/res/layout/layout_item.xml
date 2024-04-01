@@ -4,9 +4,6 @@
 
     <data>
         <variable
-            name="item"
-            type="jp.co.yumemi.android.code_check.Item" />
-        <variable
             name="onItemClickListener"
             type="jp.co.yumemi.android.code_check.CustomAdapter.OnItemClickListener" />
         <variable
