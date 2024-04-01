@@ -19,7 +19,6 @@ import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearch
  * リポジトリの詳細を表示するフラグメント。
  * 現状の機能は表示のみ
  */
-@AndroidEntryPoint
 class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
 
     private val viewModel by activityViewModels<RepositorySearchViewModel>()

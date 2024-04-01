@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 /**
  * 初期したときに表示される画面
  */
-//@AndroidEntryPoint
 class RepositoryListFragment: Fragment(R.layout.fragment_repository_list){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
