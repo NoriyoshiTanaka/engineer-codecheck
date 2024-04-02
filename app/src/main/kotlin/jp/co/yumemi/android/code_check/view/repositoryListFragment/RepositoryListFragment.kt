@@ -1,13 +1,11 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.view
+package jp.co.yumemi.android.code_check.view.repositoryListFragment
 
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -16,16 +14,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryListBinding
-import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
-import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import kotlinx.coroutines.launch
 
@@ -95,7 +88,7 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
     }
 
     /**
-     * collectした結果はアダプターに渡す
+     * collectした結果はアダプターに渡す(= リストを更新する)
      */
     private fun beginCollectRepositoryListFlow(){
         viewLifecycleOwner.lifecycleScope.launch {
@@ -132,37 +125,3 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
     }
 }
 
-val diffUtilCallbackImpl = object : DiffUtil.ItemCallback<Item>() {
-    override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
-        return oldItem == newItem
-    }
-
-    override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
-        return oldItem == newItem
-    }
-
-}
-
-class RepositoryListAdapter(
-    private val itemClickListener: OnItemClickListener,
-) : ListAdapter<Item, RepositoryListAdapter.ViewHolder>(diffUtilCallbackImpl) {
-
-    private lateinit var binding: LayoutItemBinding
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    fun interface OnItemClickListener {
-        fun itemClick(name: String)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = LayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding.root)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        binding.fullName = item.fullName
-        binding.onItemClickListener = itemClickListener
-    }
-}
