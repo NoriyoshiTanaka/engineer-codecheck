@@ -21,19 +21,15 @@ import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
 
     private val viewModel by activityViewModels<RepositorySearchViewModel>()
-
     private val args: RepositoryDetailFragmentArgs by navArgs()
-
-    private var binding: FragmentRepositoryDetailBinding? = null
-    private val _binding get() = binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("検索した日時", lastSearchDate.toString())
 
-        // データの割り付けは dataBinding に委ねているので、ここではデータをbindingへ渡すだけで終了
-        binding = FragmentRepositoryDetailBinding.bind(view)
-        _binding.item = viewModel.findRepository(args.name)
+        // データの割り付けは DataBinding に委ねているので、ここではデータをbindingへ渡すだけで終了
+        val binding = FragmentRepositoryDetailBinding.bind(view)
+        binding.item = viewModel.findRepository(args.name)
     }
 }

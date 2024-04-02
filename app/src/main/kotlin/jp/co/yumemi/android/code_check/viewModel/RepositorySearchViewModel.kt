@@ -25,13 +25,13 @@ class RepositorySearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     /**
-     * updateRepositoriesListFlow()を使って更新する。直接更新は避けること。
+     * updateRepositoryListFlow()を使って更新する。直接更新は避けること。
      */
     private val _repositoryListFlow = MutableStateFlow<List<Item>>(listOf())
 
     /**
      * _repositoriesListFlowを更新する
-     * - 更新内容はrepositoriesListFlowを通じてUIへ伝わる
+     * - 更新内容はrepositoryListFlowを通じてUIへ伝わる
      */
     private fun updateRepositoryListFlow(repositories: List<Item>) {
         _repositoryListFlow.update { repositories }
@@ -45,7 +45,7 @@ class RepositorySearchViewModel @Inject constructor(
     /**
      * github.comへ接続して検索を実行する。
      * 検索結果はViewModel内に保管しておき、アクティビティ再構築時に利用する。
-     * 検索結果はrepositoriesListFlowをcollectして取得する。
+     * 検索結果はrepositoryListFlowをcollectして取得する。
      */
     fun searchRepository(query: CharSequence) {
 
