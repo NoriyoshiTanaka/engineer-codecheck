@@ -27,20 +27,20 @@ class RepositorySearchViewModel @Inject constructor(
     /**
      * updateRepositoriesListFlow()を使って更新する。直接更新は避けること。
      */
-    private val _repositoriesListFlow = MutableStateFlow<List<Item>>(listOf())
+    private val _repositoryListFlow = MutableStateFlow<List<Item>>(listOf())
 
     /**
      * _repositoriesListFlowを更新する
      * - 更新内容はrepositoriesListFlowを通じてUIへ伝わる
      */
-    private fun updateRepositoriesListFlow(repositories: List<Item>) {
-        _repositoriesListFlow.update { repositories }
+    private fun updateRepositoryListFlow(repositories: List<Item>) {
+        _repositoryListFlow.update { repositories }
     }
 
     /**
      * UIからcollectする。
      */
-    val repositoriesListFlow = _repositoriesListFlow.asStateFlow()
+    val repositoryListFlow = _repositoryListFlow.asStateFlow()
 
     /**
      * github.comへ接続して検索を実行する。
@@ -51,10 +51,9 @@ class RepositorySearchViewModel @Inject constructor(
 
         viewModelScope.launch {
             val result = repositorySearchDataSource.searchRepository(inputText)
-            updateRepositoriesListFlow(result)
+            updateRepositoryListFlow(result)
 
             lastSearchDate = Date()
-
         }
     }
 
@@ -64,7 +63,7 @@ class RepositorySearchViewModel @Inject constructor(
      * @param fullName リポジトリの名前
      */
     fun findRepository(fullName: String): Item? {
-        val repositories = repositoriesListFlow.value
+        val repositories = repositoryListFlow.value
         return repositories.find {
             it.fullName == fullName
         }

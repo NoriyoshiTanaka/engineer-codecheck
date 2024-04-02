@@ -3,11 +3,13 @@
  */
 package jp.co.yumemi.android.code_check.view
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryListBinding
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
@@ -27,54 +30,105 @@ import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import kotlinx.coroutines.launch
 
 /**
- * 初期したときに表示される画面
+ * アプリが起動したときに表示される画面。
+ * 文字列入力のEditTextとRecyclerViewで構成される。
  */
 class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private val viewModel by activityViewModels<RepositorySearchViewModel>()
 
-        val _binding = FragmentRepositoryListBinding.bind(view)
+    private val connectivityManager by lazy {
+        requireContext().getSystemService(ConnectivityManager::class.java)}
 
-        val _viewModel by activityViewModels<RepositorySearchViewModel>()
+    private val layoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(context!!)}
+    private val dividerItemDecoration: DividerItemDecoration by lazy {
+        DividerItemDecoration(context!!, layoutManager.orientation)}
 
-        _binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-                if (action == EditorInfo.IME_ACTION_SEARCH) {
-                    editText.text.toString().let {
-                        _viewModel.searchRepository(it)
-                    }
-                    return@setOnEditorActionListener true
-                }
-                return@setOnEditorActionListener false
-            }
+    private val adapter by lazy {
+        RepositoryListAdapter(itemClickListener)
+    }
 
-        val _layoutManager = LinearLayoutManager(context!!)
-        val _dividerItemDecoration = DividerItemDecoration(context!!, _layoutManager.orientation)
-        val _adapter = RepositoryListAdapter(object : RepositoryListAdapter.OnItemClickListener {
-            override fun itemClick(name: String) {
-                gotoRepositoryFragment(name)
-            }
-        })
-
-        _binding.recyclerView.also {
-            it.layoutManager = _layoutManager
-            it.addItemDecoration(_dividerItemDecoration)
-            it.adapter = _adapter
+    private val itemClickListener: RepositoryListAdapter.OnItemClickListener =
+        RepositoryListAdapter.OnItemClickListener { name ->
+            gotoRepositoryDetailFragment(name)
         }
 
+    private val editorActionListener =
+        TextView.OnEditorActionListener { v, actionId, _ ->
+            val text = v?.text
+            when {
+                actionId != EditorInfo.IME_ACTION_SEARCH -> {
+                    false
+                }
+
+                connectivityManager.activeNetwork == null -> {
+                    showSnackBar(v, "ネットに接続していません")
+                    true
+                }
+                text.isNullOrEmpty() -> {
+                    showSnackBar(v, "何か入力してください")
+                    true
+                }
+
+                else -> {
+                    searchRepository(text)
+                    true
+                }
+            }
+        }
+
+    /**
+     * 注意喚起のSnackBarを表示する
+     */
+    private fun showSnackBar(v: View?, text: String){
+        if (v != null) {
+            Snackbar.make(v , text, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
+     */
+    private fun searchRepository(query: CharSequence) {
+        viewModel.searchRepository(query.toString())
+    }
+
+    /**
+     * collectした結果をアダプターに渡すところまで行う
+     */
+    private fun beginCollectRepositoryListFlow(){
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _viewModel.repositoriesListFlow.collect {
-                    _adapter.submitList(it)
+                viewModel.repositoryListFlow.collect {
+                    adapter.submitList(it)
                 }
             }
         }
     }
 
-    fun gotoRepositoryFragment(name: String) {
-        val _action =
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentRepositoryListBinding.bind(view)
+
+        binding.searchInputText.setOnEditorActionListener(editorActionListener)
+
+        // recyclerViewのセットアップ
+        binding.recyclerView.also {
+            it.layoutManager = layoutManager
+            it.addItemDecoration(dividerItemDecoration)
+            it.adapter = adapter
+        }
+
+        // 検索結果のcollectを始める
+        beginCollectRepositoryListFlow()
+    }
+
+    private fun gotoRepositoryDetailFragment(name: String) {
+        val action =
             RepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
-        findNavController().navigate(_action)
+        findNavController().navigate(action)
     }
 }
 
@@ -97,7 +151,7 @@ class RepositoryListAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun itemClick(name: String)
     }
 
@@ -107,8 +161,8 @@ class RepositoryListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val _item = getItem(position)
-        binding.fullName = _item.fullName
+        val item = getItem(position)
+        binding.fullName = item.fullName
         binding.onItemClickListener = itemClickListener
     }
 }
