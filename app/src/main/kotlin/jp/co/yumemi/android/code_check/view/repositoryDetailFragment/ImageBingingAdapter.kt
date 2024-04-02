@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view
+package jp.co.yumemi.android.code_check.view.repositoryDetailFragment
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
