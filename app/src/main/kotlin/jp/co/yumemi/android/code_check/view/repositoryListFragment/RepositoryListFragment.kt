@@ -34,15 +34,15 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
         requireContext().getSystemService(ConnectivityManager::class.java)
     }
 
+    private val repositoryListAdapter by lazy {
+        RepositoryListAdapter(itemClickListener)
+    }
+
     private val layoutManager: LinearLayoutManager
         get() = LinearLayoutManager(requireContext())
 
     private val dividerItemDecoration: DividerItemDecoration
         get() = DividerItemDecoration(requireContext(), layoutManager.orientation)
-
-    private val repositoryListAdapter by lazy {
-        RepositoryListAdapter(itemClickListener)
-    }
 
     private val itemClickListener: RepositoryListAdapter.OnItemClickListener =
         RepositoryListAdapter.OnItemClickListener { name ->
@@ -116,6 +116,7 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
 
         val binding = FragmentRepositoryListBinding.bind(view)
 
+        // EditTextにlistenerをセット
         binding.searchInputText.setOnEditorActionListener(editorActionListener)
 
         // recyclerViewのセットアップ
