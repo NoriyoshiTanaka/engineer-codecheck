@@ -28,17 +28,19 @@ import kotlinx.coroutines.launch
  */
 class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
 
-    private val viewModel by activityViewModels<RepositorySearchViewModel>()
+    private val repositorySearchViewModel by activityViewModels<RepositorySearchViewModel>()
 
-    private val connectivityManager by lazy {
-        requireContext().getSystemService(ConnectivityManager::class.java)}
+    private val connectivityManager: ConnectivityManager by lazy {
+        requireContext().getSystemService(ConnectivityManager::class.java)
+    }
 
-    private val layoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(context!!)}
-    private val dividerItemDecoration: DividerItemDecoration by lazy {
-        DividerItemDecoration(context!!, layoutManager.orientation)}
+    private val layoutManager: LinearLayoutManager
+        get() = LinearLayoutManager(requireContext())
 
-    private val adapter by lazy {
+    private val dividerItemDecoration: DividerItemDecoration
+        get() = DividerItemDecoration(requireContext(), layoutManager.orientation)
+
+    private val repositoryListAdapter by lazy {
         RepositoryListAdapter(itemClickListener)
     }
 
@@ -47,36 +49,36 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
             gotoRepositoryDetailFragment(name)
         }
 
-    private val editorActionListener =
-        TextView.OnEditorActionListener { v, actionId, _ ->
-            val query = v?.text
-            when {
-                actionId != EditorInfo.IME_ACTION_SEARCH -> {
-                    false
-                }
+    private val editorActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
+        val query = v?.text
+        when {
+            actionId != EditorInfo.IME_ACTION_SEARCH -> {
+                false
+            }
 
-                connectivityManager.activeNetwork == null -> {
-                    showSnackBar(v, "ネットに接続していません")
-                    true
-                }
-                query.isNullOrEmpty() -> {
-                    showSnackBar(v, "何か入力してください")
-                    true
-                }
+            connectivityManager.activeNetwork == null -> {
+                showSnackBar(v, "ネットに接続していません")
+                true
+            }
 
-                else -> {
-                    searchRepository(query)
-                    true
-                }
+            query.isNullOrEmpty() -> {
+                showSnackBar(v, "何か入力してください")
+                true
+            }
+
+            else -> {
+                searchRepository(query)
+                true
             }
         }
+    }
 
     /**
      * 注意喚起のSnackBarを表示する
      */
-    private fun showSnackBar(v: View?, text: String){
+    private fun showSnackBar(v: View?, text: String) {
         if (v != null) {
-            Snackbar.make(v , text, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(v, text, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -84,20 +86,29 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
      * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
      */
     private fun searchRepository(query: CharSequence) {
-        viewModel.searchRepository(query)
+        repositorySearchViewModel.searchRepository(query)
     }
 
     /**
      * collectした結果はアダプターに渡す(= リストを更新する)
      */
-    private fun beginCollectRepositoryListFlow(){
+    private fun beginCollectRepositoryListFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.repositoryListFlow.collect {
-                    adapter.submitList(it)
+                repositorySearchViewModel.repositoryListFlow.collect {
+                    repositoryListAdapter.submitList(it)
                 }
             }
         }
+    }
+
+    /**
+     * @param name Jsonの"full_name"を渡す
+     */
+    private fun gotoRepositoryDetailFragment(name: String) {
+        val action =
+            RepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
+        findNavController().navigate(action)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,17 +122,11 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
         binding.recyclerView.also {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
-            it.adapter = adapter
+            it.adapter = repositoryListAdapter
         }
 
         // 検索結果のcollectを始める
         beginCollectRepositoryListFlow()
-    }
-
-    private fun gotoRepositoryDetailFragment(name: String) {
-        val action =
-            RepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
-        findNavController().navigate(action)
     }
 }
 
