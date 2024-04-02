@@ -47,10 +47,10 @@ class RepositorySearchViewModel @Inject constructor(
      * 検索結果はViewModel内に保管しておき、アクティビティ再構築時に利用する。
      * 検索結果はrepositoriesListFlowをcollectして取得する。
      */
-    fun searchRepository(inputText: String) {
+    fun searchRepository(query: CharSequence) {
 
         viewModelScope.launch {
-            val result = repositorySearchDataSource.searchRepository(inputText)
+            val result = repositorySearchDataSource.searchRepository(query)
             updateRepositoryListFlow(result)
 
             lastSearchDate = Date()

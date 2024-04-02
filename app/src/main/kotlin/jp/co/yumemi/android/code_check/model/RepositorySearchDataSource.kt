@@ -19,7 +19,7 @@ class RepositorySearchDataSource @Inject constructor() {
      * 必要のないデータは読み捨てている
      * @param query 検索する文字列
      */
-    suspend fun searchRepository(query: String): List<Item> {
+    suspend fun searchRepository(query: CharSequence): List<Item> {
         val client = HttpClient(Android) {
             install(ContentNegotiation){
                 json(Json{

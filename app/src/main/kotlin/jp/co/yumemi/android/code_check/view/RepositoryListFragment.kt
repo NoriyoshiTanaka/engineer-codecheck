@@ -56,7 +56,7 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
 
     private val editorActionListener =
         TextView.OnEditorActionListener { v, actionId, _ ->
-            val text = v?.text
+            val query = v?.text
             when {
                 actionId != EditorInfo.IME_ACTION_SEARCH -> {
                     false
@@ -66,13 +66,13 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
                     showSnackBar(v, "ネットに接続していません")
                     true
                 }
-                text.isNullOrEmpty() -> {
+                query.isNullOrEmpty() -> {
                     showSnackBar(v, "何か入力してください")
                     true
                 }
 
                 else -> {
-                    searchRepository(text)
+                    searchRepository(query)
                     true
                 }
             }
@@ -91,11 +91,11 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
      * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
      */
     private fun searchRepository(query: CharSequence) {
-        viewModel.searchRepository(query.toString())
+        viewModel.searchRepository(query)
     }
 
     /**
-     * collectした結果をアダプターに渡すところまで行う
+     * collectした結果はアダプターに渡す
      */
     private fun beginCollectRepositoryListFlow(){
         viewLifecycleOwner.lifecycleScope.launch {
