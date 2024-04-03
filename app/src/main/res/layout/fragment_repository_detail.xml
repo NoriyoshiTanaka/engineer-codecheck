@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text='@{item.fullName, default="JetBrains/kotlin" }'
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +52,6 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:text='@{@string/written_language(item.language), default="Written in Kotlin" }'
-            android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/nameView"
             tools:ignore="MissingConstraints" />
@@ -66,7 +64,6 @@
             android:layout_marginTop="8dp"
             android:text='@{@string/stars(item.stargazersCount), default ="38530 stars" }'
             android:textAlignment="textEnd"
-            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/centerGuid"
@@ -80,7 +77,6 @@
             android:layout_marginTop="8dp"
             android:text='@{@string/watchers(item.watchersCount), default ="38530 watchers" }'
             android:textAlignment="textEnd"
-            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/centerGuid"
@@ -94,7 +90,6 @@
             android:layout_marginTop="8dp"
             android:text='@{@string/forks(item.forksCount), default ="4675 forks" }'
             android:textAlignment="textEnd"
-            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/centerGuid"
@@ -108,7 +103,6 @@
             android:layout_marginTop="8dp"
             android:text='@{@string/open_issues(item.openIssuesCount), default ="131 open issues" }'
             android:textAlignment="textEnd"
-            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/centerGuid"
