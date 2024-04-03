@@ -1,13 +1,7 @@
-/*
- * Copyright © 2021 YUMEMI Inc. All rights reserved.
- */
-package jp.co.yumemi.android.code_check.view.repositoryListFragment
+package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -16,23 +10,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryListBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentListBinding
 import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 import kotlinx.coroutines.launch
 
 /**
- * アプリが起動したときに表示される画面。
- * 文字列入力のEditTextとRecyclerViewで構成される。
+ * リスト部分のフラグメント。
+ * サーチバーのフラグメントとリストのフラグメントで検索画面を構成する。
  */
-class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
+class ListFragment: Fragment(R.layout.fragment_list) {
 
     private val repositorySearchViewModel by activityViewModels<RepositorySearchViewModel>()
-
-    private val connectivityManager: ConnectivityManager by lazy {
-        requireContext().getSystemService(ConnectivityManager::class.java)
-    }
 
     private val repositoryListAdapter by lazy {
         RepositoryListAdapter(itemClickListener)
@@ -48,46 +37,6 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
         RepositoryListAdapter.OnItemClickListener { name ->
             gotoRepositoryDetailFragment(name)
         }
-
-    private val editorActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
-        val query = v?.text
-        when {
-            actionId != EditorInfo.IME_ACTION_SEARCH -> {
-                false
-            }
-
-            connectivityManager.activeNetwork == null -> {
-                showSnackBar(v, "ネットに接続していません")
-                true
-            }
-
-            query.isNullOrEmpty() -> {
-                showSnackBar(v, "何か入力してください")
-                true
-            }
-
-            else -> {
-                searchRepository(query)
-                true
-            }
-        }
-    }
-
-    /**
-     * 注意喚起のSnackBarを表示する
-     */
-    private fun showSnackBar(v: View?, text: String) {
-        if (v != null) {
-            Snackbar.make(v, text, Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
-     */
-    private fun searchRepository(query: CharSequence) {
-        repositorySearchViewModel.searchRepository(query)
-    }
 
     /**
      * collectした結果はアダプターに渡す(= リストを更新する)
@@ -107,17 +56,14 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
      */
     private fun gotoRepositoryDetailFragment(name: String) {
         val action =
-            RepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
+            SearchBarAndListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
         findNavController().navigate(action)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentRepositoryListBinding.bind(view)
-
-        // EditTextにlistenerをセット
-        binding.searchInputText.setOnEditorActionListener(editorActionListener)
+        val binding = FragmentListBinding.bind(view)
 
         // recyclerViewのセットアップ
         binding.recyclerView.also {
@@ -129,5 +75,5 @@ class RepositoryListFragment : Fragment(R.layout.fragment_repository_list) {
         // 検索結果のcollectを始める
         beginCollectRepositoryListFlow()
     }
-}
 
+}

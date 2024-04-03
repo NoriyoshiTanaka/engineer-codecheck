@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view.repositoryListFragment
+package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
 import android.view.LayoutInflater
 import android.view.View
