@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/oneFragment">
+    app:startDestination="@id/search_bar_and_list_fragment">
 
     <fragment
-        android:id="@+id/oneFragment"
-        android:name="jp.co.yumemi.android.code_check.view.repositoryListFragment.RepositoryListFragment"
+        android:id="@+id/search_bar_and_list_fragment"
+        android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.SearchBarAndListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_repository_list">
+        tools:layout="@layout/fragment_search_bar_and_list">
         <action
             android:id="@+id/action_repositoriesFragment_to_repositoryFragment"
-            app:destination="@id/twoFragment" />
+            app:destination="@id/repository_detail_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/twoFragment"
+        android:id="@+id/repository_detail_fragment"
         android:name="jp.co.yumemi.android.code_check.view.repositoryDetailFragment.RepositoryDetailFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_repository_detail">
