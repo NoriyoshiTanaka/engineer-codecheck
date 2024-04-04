@@ -2,6 +2,7 @@ package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -52,6 +53,7 @@ class SearchBarFragment: Fragment(R.layout.fragment_search_bar) {
      */
     private fun searchRepository(query: CharSequence) {
         repositorySearchViewModel.searchRepository(query)
+        showSnackBar(view, "検索します")
     }
 
     /**
@@ -70,5 +72,4 @@ class SearchBarFragment: Fragment(R.layout.fragment_search_bar) {
         // EditTextにlistenerをセット
         binding.searchInputText.setOnEditorActionListener(editorActionListener)
     }
-
 }
