@@ -34,7 +34,7 @@ class NavHostActivityTest {
     var mActivityScenarioRule = ActivityScenarioRule(NavHostActivity::class.java)
 
     /**
-     * サーチバーに文字を入力して件s区を実行するテスト
+     * サーチバーに文字を入力して検索を実行するテスト
      */
     @Test
     fun runThrough() {
@@ -54,12 +54,11 @@ class NavHostActivityTest {
         }
         RepositorySearchDataSourceLocator.repositorySearchDataSource = fakeDataSource
 
-        //
-        val scenario = launchActivity<NavHostActivity>()
-        //scenario.moveToState(Lifecycle.State.RESUMED)
+        // アクティビティを起動する
+        launchActivity<NavHostActivity>()
 
         // expectedを入力して実行ボタンを押す
-        val searchInputText = onView(withId(R.id.searchInputText))
+        val searchInputText = onView(withId(R.id.search_input_text))
         searchInputText.perform(click(), replaceText(expected))
         searchInputText.perform(pressImeActionButton())
 
@@ -80,11 +79,11 @@ class NavHostActivityTest {
         val watcherString = resources.getString(R.string.watchers, 1)
         val openIssuesString = resources.getString(R.string.open_issues, 1)
 
-        onView(allOf(withId(R.id.forksView), withText(forkString))).check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.languageView), withText(languageString))).check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.starsView), withText(starsString))).check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.watchersView), withText(watcherString))).check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.openIssuesView), withText(openIssuesString))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.forks_view), withText(forkString))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.language_view), withText(languageString))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.stars_view), withText(starsString))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.watchers_view), withText(watcherString))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.open_issues_view), withText(openIssuesString))).check(matches(isDisplayed()))
     }
 }
 
