@@ -6,6 +6,7 @@ buildscript {
         hilt_version = "2.50"
         ktor_version = "2.3.9"
         test_core_version = "1.5.0"
+        coroutine_version = "1.7.3"
     }
     repositories {
         google()
