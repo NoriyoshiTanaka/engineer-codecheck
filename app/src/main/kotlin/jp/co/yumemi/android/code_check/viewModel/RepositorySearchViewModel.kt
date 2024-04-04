@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
 import jp.co.yumemi.android.code_check.model.dataClass.Item
+import jp.co.yumemi.android.code_check.serviceLocator.RepositorySearchDataSourceLocator
 import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +25,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RepositorySearchViewModel @Inject constructor(
-    private val repositorySearchDataSource: RepositorySearchDataSource
+    repositorySearchDataSource: RepositorySearchDataSource
 ) : ViewModel() {
+
+    private val repositorySearchDataSource =
+        RepositorySearchDataSourceLocator.repositorySearchDataSource ?: repositorySearchDataSource
 
     /**
      * updateRepositoryListFlow()を使って更新する。直接更新は避けること。
