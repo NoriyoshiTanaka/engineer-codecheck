@@ -9,6 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
 import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -47,11 +50,15 @@ class RepositorySearchViewModel @Inject constructor(
      * 検索結果はViewModel内に保管しておき、アクティビティ再構築時に利用する。
      * 検索結果はrepositoryListFlowをcollectして取得する。
      */
-    fun searchRepository(query: CharSequence) {
-
-        viewModelScope.launch {
-            val result = repositorySearchDataSource.searchRepository(query)
-            updateRepositoryListFlow(result)
+    fun searchRepository(
+        query: CharSequence,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch  {
+            val result = async (dispatcher) {
+                return@async repositorySearchDataSource.searchRepository(query)
+            }
+            updateRepositoryListFlow(result.await())
 
             lastSearchDate = Date()
         }
