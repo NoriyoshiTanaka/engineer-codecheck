@@ -2,15 +2,14 @@ package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.snackbar.Snackbar
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchBarBinding
+import jp.co.yumemi.android.code_check.uitl.showSnackBar
 import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
 
 /**
@@ -27,20 +26,24 @@ class SearchBarFragment: Fragment(R.layout.fragment_search_bar) {
     private val editorActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
         val query = v?.text
         when {
+            // サーチ以外ならスルー
             actionId != EditorInfo.IME_ACTION_SEARCH -> {
                 false
             }
 
+            // ネットワーク接続がないなら、SnackBarを出して戻る
             connectivityManager.activeNetwork == null -> {
-                showSnackBar(v, "ネットに接続していません")
+                showSnackBar(v, getString(R.string.no_internet_connection))
                 true
             }
 
+            // 何も入力せずに検索しようとしたなら、SnackBarを出して戻る
             query.isNullOrEmpty() -> {
-                showSnackBar(v, "何か入力してください")
+                showSnackBar(v, getString(R.string.input_something_please))
                 true
             }
 
+            // 全部のチェックがOKなら検索実行
             else -> {
                 searchRepository(query)
                 true
@@ -52,16 +55,11 @@ class SearchBarFragment: Fragment(R.layout.fragment_search_bar) {
      * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
      */
     private fun searchRepository(query: CharSequence) {
-        repositorySearchViewModel.searchRepository(query)
-        showSnackBar(view, "検索します")
-    }
-
-    /**
-     * 注意喚起のSnackBarを表示する
-     */
-    private fun showSnackBar(v: View?, text: String) {
-        if (v != null) {
-            Snackbar.make(v, text, Snackbar.LENGTH_SHORT).show()
+        try {
+            repositorySearchViewModel.searchRepository(query)
+            showSnackBar(view, getString(R.string.go_search))
+        } catch (e: Exception){
+            showSnackBar(view, getString(R.string.error_happen))
         }
     }
 

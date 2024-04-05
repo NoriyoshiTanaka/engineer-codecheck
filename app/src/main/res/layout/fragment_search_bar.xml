@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:hint="@string/searchInputText_hint"
+            android:hint="@string/search_input_text_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textSize="12sp" />

@@ -7,12 +7,16 @@
 
     <fragment
         android:id="@+id/search_bar_and_list_fragment"
-        android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.SearchBarAndListFragment"
+        android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.SearchBarAndRepositoryListFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_search_bar_and_list">
         <action
             android:id="@+id/action_repositoriesFragment_to_repositoryFragment"
-            app:destination="@id/repository_detail_fragment" />
+            app:destination="@id/repository_detail_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment

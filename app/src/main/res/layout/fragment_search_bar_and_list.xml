@@ -13,14 +13,13 @@
         android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.SearchBarFragment"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/list_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.ListFragment"
+        android:name="jp.co.yumemi.android.code_check.view.searchBarAndListFragment.RepositoryListFragment"
         app:layout_constraintTop_toBottomOf="@+id/search_bar_fragment_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

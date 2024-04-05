@@ -15,7 +15,7 @@ interface IRepositorySearchDataSource {
      * 必要のないデータは読み捨てている
      * @param query 検索する文字列
      */
-    suspend fun searchRepository(query: CharSequence): List<Item>
+    suspend fun searchRepository(query: CharSequence): List<Item>?
 }
 
 class RepositorySearchDataSource @Inject constructor(
@@ -26,12 +26,17 @@ class RepositorySearchDataSource @Inject constructor(
      * 必要のないデータは読み捨てている
      * @param query 検索する文字列
      */
-    override suspend fun searchRepository(query: CharSequence): List<Item> {
-        val searchResult: SearchResult = client.get("https://api.github.com/search/repositories") {
+    override suspend fun searchRepository(query: CharSequence): List<Item>? {
+        val searchResult = client.get("https://api.github.com/search/repositories") {
             header("Accept", "application/vnd.github.v3+json")
             parameter("q", query)
-        }.body()
+        }
 
-        return searchResult.items
+        searchResult.runCatching {
+            val result = searchResult.body<SearchResult>()
+            return result.items
+        }
+
+        return null
     }
 }

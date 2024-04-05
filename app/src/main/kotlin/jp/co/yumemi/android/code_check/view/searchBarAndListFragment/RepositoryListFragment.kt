@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentListBinding
+import jp.co.yumemi.android.code_check.uitl.showSnackBar
 import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel
+import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel.Errors.Parse
+import jp.co.yumemi.android.code_check.viewModel.RepositorySearchViewModel.Errors.TimeOut
 import kotlinx.coroutines.launch
 
 /**
  * リスト部分のフラグメント。
  * サーチバーのフラグメントとリストのフラグメントで検索画面を構成する。
  */
-class ListFragment: Fragment(R.layout.fragment_list) {
+class RepositoryListFragment: Fragment(R.layout.fragment_list) {
 
     private val repositorySearchViewModel by activityViewModels<RepositorySearchViewModel>()
 
@@ -44,8 +47,26 @@ class ListFragment: Fragment(R.layout.fragment_list) {
     private fun beginCollectRepositoryListFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repositorySearchViewModel.repositoryListFlow.collect {
-                    repositoryListAdapter.submitList(it)
+                launch {
+                    // リストの更新をcollectする
+                    repositorySearchViewModel.repositoryListFlow.collect {
+                        if (it != repositoryListAdapter.currentList) {
+                            // 更新されました、を出してリストをアップデートする
+                            showSnackBar(view, getString(R.string.list_updated))
+                            repositoryListAdapter.submitList(it)
+                        }
+                    }
+                }
+
+                launch {
+                    // エラーをcollectする
+                    repositorySearchViewModel.errorFlow.collect{
+                        val string = when (it){
+                            TimeOut -> getString(R.string.timeout)
+                            Parse -> getString(R.string.error)
+                        }
+                        showSnackBar(view, string)
+                    }
                 }
             }
         }
@@ -56,7 +77,7 @@ class ListFragment: Fragment(R.layout.fragment_list) {
      */
     private fun gotoRepositoryDetailFragment(name: String) {
         val action =
-            SearchBarAndListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
+            SearchBarAndRepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
         findNavController().navigate(action)
     }
 
@@ -74,6 +95,7 @@ class ListFragment: Fragment(R.layout.fragment_list) {
 
         // 検索結果のcollectを始める
         beginCollectRepositoryListFlow()
-    }
 
+        //beginCollectErrorFlow()
+    }
 }

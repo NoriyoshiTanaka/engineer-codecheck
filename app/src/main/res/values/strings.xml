@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
-    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="search_input_text_hint">GitHub のリポジトリを検索できるよー</string>
     <string name="written_language">Written in %s</string>
     <string name="stars">%d stars</string>
     <string name="watchers">%d watchers</string>
     <string name="forks">%d forks</string>
     <string name="open_issues">%d open issues</string>
+    <string name="last_search_date">検索した日時 %s</string>
+    <string name="list_updated">リストが変更されました</string>
+    <string name="no_internet_connection">ネットに接続していません</string>
+    <string name="input_something_please">何か入力してください</string>
+    <string name="go_search">検索します</string>
+    <string name="error_happen">エラーです</string>
+    <string name="timeout">タイムアウトです</string>
+    <string name="error">エラーです</string>
 </resources>
