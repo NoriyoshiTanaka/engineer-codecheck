@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
-import android.content.ClipData.Item
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentListBinding
 import jp.co.yumemi.android.code_check.uitl.showSnackBar
