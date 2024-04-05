@@ -11,4 +11,7 @@
     <string name="no_internet_connection">ネットに接続していません</string>
     <string name="input_something_please">何か入力してください</string>
     <string name="go_search">検索します</string>
+    <string name="error_happen">エラーです</string>
+    <string name="timeout">タイムアウトです</string>
+    <string name="error">エラーです</string>
 </resources>

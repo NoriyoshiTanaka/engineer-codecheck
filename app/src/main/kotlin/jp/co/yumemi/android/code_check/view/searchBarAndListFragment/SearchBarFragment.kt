@@ -55,8 +55,12 @@ class SearchBarFragment: Fragment(R.layout.fragment_search_bar) {
      * 検索を実行する。検索結果はrepositoryListFlowをcollectして取得する
      */
     private fun searchRepository(query: CharSequence) {
-        repositorySearchViewModel.searchRepository(query)
-        showSnackBar(view, getString(R.string.go_search))
+        try {
+            repositorySearchViewModel.searchRepository(query)
+            showSnackBar(view, getString(R.string.go_search))
+        } catch (e: Exception){
+            showSnackBar(view, getString(R.string.error_happen))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
