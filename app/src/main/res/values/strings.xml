@@ -7,4 +7,8 @@
     <string name="forks">%d forks</string>
     <string name="open_issues">%d open issues</string>
     <string name="last_search_date">検索した日時 %s</string>
+    <string name="list_udpated">リストが変更されました</string>
+    <string name="no_internet_connection">ネットに接続していません</string>
+    <string name="input_something_please">何か入力してください</string>
+    <string name="go_search">検索します</string>
 </resources>
