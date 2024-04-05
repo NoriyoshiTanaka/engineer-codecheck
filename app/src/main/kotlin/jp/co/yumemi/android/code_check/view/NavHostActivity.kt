@@ -14,9 +14,4 @@ import java.util.*
  * Fragmentの差し替えはNavigationComponentを使っている。
  */
 @AndroidEntryPoint
-class NavHostActivity : AppCompatActivity(R.layout.activity_nav_host) {
-
-    companion object {
-        lateinit var lastSearchDate: Date
-    }
-}
+class NavHostActivity : AppCompatActivity(R.layout.activity_nav_host)

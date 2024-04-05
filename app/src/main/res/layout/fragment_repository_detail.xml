@@ -7,6 +7,9 @@
         <variable
             name="item"
             type="jp.co.yumemi.android.code_check.model.dataClass.Item" />
+        <variable
+            name="date"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,6 +56,7 @@
             android:layout_marginTop="8dp"
             android:text='@{@string/written_language(item.language), default="Written in Kotlin" }'
             android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name_view"
             tools:ignore="MissingConstraints" />
 
@@ -107,6 +111,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/center_guide"
             app:layout_constraintTop_toBottomOf="@id/forks_view" />
+
+        <TextView
+            android:id="@+id/last_search_date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text='@{@string/last_search_date(date), default ="検索した日時: 2024/04/05/ 午後0:00:00"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/open_issues_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

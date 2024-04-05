@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.model.RepositorySearchDataSource
 import jp.co.yumemi.android.code_check.model.dataClass.Item
 import jp.co.yumemi.android.code_check.serviceLocator.RepositorySearchDataSourceLocator
-import jp.co.yumemi.android.code_check.view.NavHostActivity.Companion.lastSearchDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -48,6 +47,8 @@ class RepositorySearchViewModel @Inject constructor(
      * UIからcollectする。
      */
     val repositoryListFlow = _repositoryListFlow.asStateFlow()
+
+    var lastSearchDate: Date? = null
 
     /**
      * github.comへ接続して検索を実行する。
