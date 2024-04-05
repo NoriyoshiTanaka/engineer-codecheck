@@ -2,7 +2,6 @@ package jp.co.yumemi.android.code_check.view.searchBarAndListFragment
 
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView

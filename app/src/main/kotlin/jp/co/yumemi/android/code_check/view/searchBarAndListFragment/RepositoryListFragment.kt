@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * リスト部分のフラグメント。
  * サーチバーのフラグメントとリストのフラグメントで検索画面を構成する。
  */
-class ListFragment: Fragment(R.layout.fragment_list) {
+class RepositoryListFragment: Fragment(R.layout.fragment_list) {
 
     private val repositorySearchViewModel by activityViewModels<RepositorySearchViewModel>()
 
@@ -56,7 +56,7 @@ class ListFragment: Fragment(R.layout.fragment_list) {
      */
     private fun gotoRepositoryDetailFragment(name: String) {
         val action =
-            SearchBarAndListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
+            SearchBarAndRepositoryListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(name = name)
         findNavController().navigate(action)
     }
 
