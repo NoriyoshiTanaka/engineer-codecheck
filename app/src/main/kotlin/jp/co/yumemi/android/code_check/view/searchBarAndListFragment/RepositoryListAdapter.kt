@@ -39,11 +39,13 @@ class RepositoryListAdapter(
     companion object {
         val diffUtilCallbackImpl = object : DiffUtil.ItemCallback<Item>() {
             override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
-                return oldItem == newItem
+                // fullNameしか使わないので、他は比較しないs
+                return oldItem.fullName == newItem.fullName
             }
 
             override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
-                return oldItem == newItem
+                // fullNameしか使わないので、他は比較しないs
+                return oldItem.fullName == newItem.fullName
             }
         }
     }
